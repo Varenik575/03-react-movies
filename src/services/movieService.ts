@@ -3,12 +3,11 @@ import type { Movie } from "../types/movie";
 const AUTHORISATION_KEY = import.meta.env.VITE_TMDB_TOKEN;
 
 interface MovieSearchResults {
-    results: Movie[],
+    results: Movie[];
 }
 
 
 export const fetchMovies = async(query: string) => {
-console.log(query);
 const response = 
 await axios.get<MovieSearchResults>(`https://api.themoviedb.org/3/search/movie?query=${query}`,
 {
@@ -16,7 +15,5 @@ await axios.get<MovieSearchResults>(`https://api.themoviedb.org/3/search/movie?q
     Authorization: `Bearer ${AUTHORISATION_KEY}`,
   }
 });
-
-console.log(response.data.results);
-
+return response.data.results;
 };
