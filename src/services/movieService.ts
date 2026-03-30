@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import type { Movie } from "../types/movie";
 const AUTHORISATION_KEY = import.meta.env.VITE_TMDB_TOKEN;
 
@@ -8,7 +8,7 @@ interface MovieSearchResults {
 
 
 export const fetchMovies = async(query: string) => {
-const response = 
+const response:AxiosResponse<MovieSearchResults> = 
 await axios.get<MovieSearchResults>(`https://api.themoviedb.org/3/search/movie?query=${query}`,
 {
   headers: {

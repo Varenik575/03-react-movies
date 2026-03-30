@@ -13,11 +13,11 @@ function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [currentMovie, setCurrentMovie] = useState<Movie>();
+  const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setCurrentMovie(null);
+  };
 
   const handleSearch = async (query: string) => {
     try {
@@ -36,22 +36,20 @@ function App() {
     }
   };
 
-  const handleSelect = (event: React.MouseEvent<HTMLLIElement>) => {
-    const movieId = event.currentTarget.value;
-    setCurrentMovie(movies.find(movie => movie.id === movieId));
-    openModal();
+  const handleSelect = (selectedMovie: Movie) => {
+    setCurrentMovie(selectedMovie);
   };
 
   return (
     <>
       <Toaster />
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar onSubmit={handleSearch} />
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
       {movies.length > 0 && (
         <MovieGrid onSelect={handleSelect} movies={movies} />
       )}
-      {isModalOpen && <MovieModal movie={currentMovie} onClose={closeModal} />}
+      {currentMovie && <MovieModal movie={currentMovie} onClose={closeModal} />}
     </>
   );
 }
